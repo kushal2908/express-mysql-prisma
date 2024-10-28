@@ -46,6 +46,15 @@ const signin = async (req: Request, res: Response, next: NextFunction): Promise<
       data: {
         authId: userExist.id,
         userId: userExist.userId,
+        case: "SIGNIN",
+      },
+    });
+    const updateAuthTable = await prisma.auth.update({
+      where: {
+        id: userExist.id,
+      },
+      data: {
+        isSignedIn: true,
       },
     });
     return res.status(200).json({ token });

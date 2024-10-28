@@ -27,6 +27,12 @@ enum Role {
   ADMIN
 }
 
+enum Case {
+  SIGNIN
+  VERIFICATION
+  SINGOUT
+}
+
 //Models
 
 model user {
@@ -46,13 +52,14 @@ model user {
 }
 
 model auth {
-  id       Int    @id @default(autoincrement())
-  username String @unique
-  password String
-  status   Status @default(ACTIVE)
-  role     Role   @default(USER)
-  userId   Int
-  user     user   @relation(fields: [userId], references: [id])
+  id         Int     @id @default(autoincrement())
+  username   String  @unique
+  password   String
+  status     Status  @default(ACTIVE)
+  role       Role    @default(USER)
+  userId     Int
+  isSignedIn Boolean @default(false)
+  user       user    @relation(fields: [userId], references: [id])
 
   auth_history auth_history[]
 }
@@ -61,8 +68,9 @@ model auth_history {
   id          Int      @id @default(autoincrement())
   authId      Int?
   userId      Int?
-  loggedInAt  DateTime @default(now())
-  loggedOutAt DateTime @updatedAt
+  case        Case     @default(SIGNIN)
+  signedInAt  DateTime @default(now())
+  signedOutAt DateTime @updatedAt
 
   auth auth? @relation(fields: [authId], references: [id])
   user user? @relation(fields: [userId], references: [id])

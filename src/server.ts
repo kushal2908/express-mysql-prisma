@@ -6,7 +6,7 @@ import {
   getUserByIdController,
   updateUserController,
 } from "./controller/user";
-import { signinController, signupController } from "./controller/auth";
+import { signinController, signupController, singoutController } from "./controller/auth";
 
 dotenv.config();
 
@@ -16,8 +16,9 @@ const PORT = process.env.PORT || 3366;
 
 // Routes
 // Auth
-app.post("/signup", signupController);
 app.post("/signin", signinController);
+app.post("/signup", signupController);
+app.post("/signout/:id", singoutController);
 // User
 app.get("/users", getAllUsersController);
 app.post("/users", createUserController);

@@ -5,7 +5,11 @@ const getAllUsers = async (req: Request, res: Response, next: NextFunction): Pro
   try {
     const result = await prisma.user.findMany({
       include: {
-        auth: true,
+        auth: {
+          omit: {
+            password: true,
+          },
+        },
       },
     });
     if (!result || result?.length < 1) {
