@@ -1,0 +1,62 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# Output directories
+dist/
+.out/
+.next/
+.build/
+
+# Dependency directories
+node_modules/
+.pnp/
+.pnp.js
+
+# Build and cache directories
+.cache/
+.vercel/
+netlify/
+
+# Environment files
+.env
+.env.local
+.env.production
+.env.prod
+.env.*.local
+
+# Logs
+logs
+*.log
+*.log.*
+
+# System files
+.DS_Store
+Thumbs.db
+
+# IDE-specific directories
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Test coverage
+coverage/
+.jest/
+
+# Ignore macOS file
+.DS_Store
+
+# Ignore TypeScript build artifacts
+*.tsbuildinfo
+
+# Ignore temporary files
+*.swp
+*.swo
+*~
