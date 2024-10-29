@@ -30,7 +30,7 @@ enum Role {
 enum Case {
   SIGNIN
   VERIFICATION
-  SINGOUT
+  SIGNOUT
 }
 
 //Models
