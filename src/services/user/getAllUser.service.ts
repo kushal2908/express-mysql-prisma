@@ -18,7 +18,6 @@ const getAllUsers = async (req: Request, res: Response): Promise<any> => {
       },
     },
   });
-
   if (!result || result?.length < 1) {
     return ERROR_RESPONSE(res, "No user found");
   }
