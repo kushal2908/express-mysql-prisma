@@ -33,6 +33,11 @@ enum Case {
   SIGNOUT
 }
 
+enum StockType {
+  IN
+  OUT
+}
+
 //Models
 
 model user {
@@ -77,11 +82,37 @@ model auth_history {
 }
 
 model product {
-  id          String @id @unique @default(cuid())
-  name        String
-  description String @db.LongText
-  price       Float
+  id            String          @id @unique @default(cuid())
+  name          String
+  description   String          @db.LongText
+  price         Float
+  sku           String          @unique
+  qty           Int
+  stock         stock[]
+  stock_history stock_history[]
 
   @@fulltext([description])
   @@fulltext([description, name])
+}
+
+model stock {
+  id            Int             @id @default(autoincrement())
+  productId     String
+  qty           Int
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  product       product         @relation(fields: [productId], references: [id])
+  stock_history stock_history[]
+}
+
+model stock_history {
+  id         Int       @id @default(autoincrement())
+  stockId    Int
+  productId  String
+  currQty    Int
+  prevQty    Int
+  changedQty Int
+  type       StockType
+  product    product   @relation(fields: [productId], references: [id])
+  stock      stock     @relation(fields: [stockId], references: [id])
 }

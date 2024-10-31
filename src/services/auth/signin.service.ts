@@ -40,7 +40,7 @@ export const signinService = async (req: Request, res: Response): Promise<any> =
     },
     process.env.JWT_SECRET!,
     {
-      expiresIn: "1d",
+      expiresIn: "365d",
     }
   );
 
