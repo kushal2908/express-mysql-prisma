@@ -16,31 +16,36 @@
 - Prisma CLI `npm install prisma --global`
 
 ### Prerequisites
- 
+
 1.  Clone the repository:
+
 ```bash
 git clone https://github.com/kushal2908/express-mysql-prisma.git
 cd express-mysql-prisma
 ```
-*Make the env.example to .env*
+
+_Make the env.example to .env_
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
-5. Declare prisma datasource
-```bash
-npx prisma init --datasource-provider mysql
-```
-4. Run Migrations:
+
+3. Run Migrations:
+
 ```bash
 npm run migrate:dev
 ```
-5. Start the server
+
+4. Start the server
+
 ```bash
 npm run dev
 ```
+
 The server will start on http://localhost:3366.
+
 > if you want to change the port change it in the .env file
 
 ### Folder Structure
