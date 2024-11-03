@@ -2,25 +2,39 @@ import { prisma } from "@/prisma";
 import { ERROR_RESPONSE, SUCCESS_RESPONSE } from "@/utils/helper";
 import { Request, Response } from "express";
 const productUpdateService = async (req: Request, res: Response): Promise<any> => {
-  // get products existing data
-  const getProductsExistingData = await prisma.product.findUnique({
+  // get exsting product, stock and stock_history data
+  const getExistingProduct = await prisma.product.findFirst({
     where: {
       id: req.params.id,
     },
-  });
-
-  //   check if the sku already exist or not
-  const skuExist = await prisma.product.findFirst({
-    where: {
-      sku: req.body.sku,
+    orderBy: {
+      id: "desc",
     },
   });
-  if (skuExist) {
-    return ERROR_RESPONSE(res, "SKU already exist");
-  }
 
-  // update the product
-  const updateProduct = await prisma.product.update({
+  const getExistingProductStock = await prisma.stock.findFirst({
+    where: {
+      productId: getExistingProduct?.id,
+    },
+    orderBy: {
+      id: "desc",
+    },
+  });
+  const getExistingProductStockHistory = await prisma.stock_history.findFirst({
+    where: {
+      stockId: getExistingProductStock?.id,
+    },
+    orderBy: {
+      id: "desc",
+    },
+  });
+
+  // validate
+  if (!getExistingProduct) {
+    return ERROR_RESPONSE(res, "Product doesnt exist!");
+  }
+  // Update product table
+  await prisma.product.update({
     where: {
       id: req.params.id,
     },
@@ -28,40 +42,29 @@ const productUpdateService = async (req: Request, res: Response): Promise<any> =
       ...req.body,
     },
   });
-
-  //   update stock table
-  const updateStockTable = await prisma.stock.update({
+  // Update stock table
+  await prisma.stock.update({
     where: {
-      productId: req.params.id,
+      id: getExistingProductStock?.id,
     },
     data: {
       productId: req.params.id,
       qty: req.body.qty,
     },
   });
-
-  // Update stock history table
-  // get the updated product stock history
-  const stockHistory = await prisma.stock_history.findFirst({
+  // Update stock_history table
+  await prisma.stock_history.update({
     where: {
-      stockId: updateStockTable.id,
-    },
-    orderBy: { id: "desc" },
-  });
-
-  //   todo: stock_history update logic needs to be updated
-  await prisma.stock_history.create({
-    where: {
-      stockId: updateStockTable.id,
+      id: getExistingProductStockHistory?.id,
     },
     data: {
-      stockId: updateStockTable.id,
+      stockId: getExistingProductStock?.id,
       productId: req.params.id,
-      currQty: updateProduct.qty,
-      prevQty: Number(stockHistory?.currQty),
+      currQty: req.body.qty + getExistingProductStockHistory?.prevQty,
+      prevQty: getExistingProductStockHistory?.prevQty,
       changedQty: req.body.qty,
-      //   type: parseInt(req.params.qty) > Number(updateProduct.qty) ? "IN" : "OUT",
     },
   });
+  return SUCCESS_RESPONSE(res, "Product updated");
 };
 export default productUpdateService;

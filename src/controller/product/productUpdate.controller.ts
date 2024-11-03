@@ -1,5 +1,6 @@
 import { productUpdateDto } from "@/dto/product/productDto";
-import productUpdateService from "@/services/product/productUpdateService";
+import { productUpdateService } from "@/services/product";
+
 import { ERROR_RESPONSE } from "@/utils/helper";
 import { NextFunction, Request, Response } from "express";
 
