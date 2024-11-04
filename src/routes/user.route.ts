@@ -1,9 +1,4 @@
-import {
-  createUserController,
-  getAllUsersController,
-  getUserByIdController,
-  updateUserController,
-} from "@/controller/user";
+import { getAllUsersController, getUserByIdController, updateUserController } from "@/controller/user";
 import protectedRoutes from "@/middleware/protectedRoute.middleware";
 import { Router } from "express";
 

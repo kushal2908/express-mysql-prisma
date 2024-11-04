@@ -1,6 +1,6 @@
 import { prisma } from "@/prisma";
 import { ERROR_RESPONSE, SUCCESS_RESPONSE } from "@/utils/helper";
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 
 /**
  * Handles signout logic for a user.

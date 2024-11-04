@@ -1,6 +1,6 @@
 import { prisma } from "@/prisma";
 import { NextFunction, Request, Response } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 /**
  * Checks if the request is authenticated and authorized
@@ -17,8 +17,20 @@ const protectedRoutes = async (req: Request, res: Response, next: NextFunction):
       // Extract the token from the Authorization header
       token = req.headers.authorization.split(" ")[1];
       // Verify the token using the JWT_SECRET environment variable
-      const decode = jwt.verify(token, process.env.JWT_SECRET!);
+      const decode = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
 
+      // check if the user is still signed in
+      const checkSignIn = await prisma.auth.findUnique({
+        where: {
+          id: decode.data.authId,
+        },
+      });
+
+      if (!checkSignIn?.isSignedIn) {
+        return res.status(401).json({
+          msg: "Unauthorized",
+        });
+      }
       // If the token is valid, call the next middleware function
       next();
     } catch (err) {
