@@ -1,7 +1,7 @@
-import { searchProductService } from "@/services/product";
-import { ERROR_RESPONSE } from "@/utils/helper";
+import { searchProductService } from '@/services/product';
+import { ERROR_RESPONSE } from '@/utils/helper';
 
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response } from 'express';
 
 /**
  * Handles searching for products
@@ -12,14 +12,14 @@ import { NextFunction, Request, Response } from "express";
  * or calls the `next` middleware function with the error if the search fails
  */
 const searchProduct = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-  try {
-    const { query } = req.query; // Search term
-    if (!query) return ERROR_RESPONSE(res, "Query parameter is required");
-    // const result = await searchProductService(req, res);
-    // return result;
-  } catch (error) {
-    next(error);
-  }
+    try {
+        const { q } = req.query; // Search term
+        if (!q) return ERROR_RESPONSE(res, 'Query parameter is required');
+        const result = await searchProductService(req, res);
+        return result;
+    } catch (error) {
+        next(error);
+    }
 };
 
 export default searchProduct;

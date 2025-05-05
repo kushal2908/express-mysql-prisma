@@ -1,6 +1,6 @@
-import { prisma } from "@/prisma";
-import { ERROR_RESPONSE, SUCCESS_RESPONSE } from "@/utils/helper";
-import { Request, Response } from "express";
+import { prisma } from '@/prisma';
+import { ERROR_RESPONSE, SUCCESS_RESPONSE } from '@/utils/helper';
+import { Request, Response } from 'express';
 
 /**
  * Handles getting all users
@@ -9,18 +9,10 @@ import { Request, Response } from "express";
  * @returns A JSON response with the list of users
  */
 const getAllUsers = async (req: Request, res: Response): Promise<any> => {
-  const result = await prisma.user.findMany({
-    include: {
-      auth: {
-        omit: {
-          password: true,
-        },
-      },
-    },
-  });
-  if (!result || result?.length < 1) {
-    return ERROR_RESPONSE(res, "No user found");
-  }
-  return SUCCESS_RESPONSE(res, "All users list", result);
+    const result = await prisma.user.findMany({});
+    if (!result || result?.length < 1) {
+        return ERROR_RESPONSE(res, 'No user found');
+    }
+    return SUCCESS_RESPONSE(res, 'All users list', result);
 };
 export default getAllUsers;

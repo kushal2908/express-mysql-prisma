@@ -1,5 +1,6 @@
-import { SUCCESS_RESPONSE } from "@/utils/helper";
-import { Request, Response } from "express";
+import { prisma } from '@/prisma';
+import { SUCCESS_RESPONSE } from '@/utils/helper';
+import { Request, Response } from 'express';
 
 /**
  * Handles searching products
@@ -9,7 +10,20 @@ import { Request, Response } from "express";
  * or calls the `next` middleware function with the error if the search fails
  */
 const searchProduct = async (req: Request, res: Response): Promise<any> => {
-  return;
+    const { q } = req.query;
+    const result = await prisma.product.findMany({
+        where: {
+            description: {
+                search: q?.toString(),
+                contains: q?.toString(), // This generates WHERE name LIKE '%phone%'
+            },
+            name: {
+                search: q?.toString(),
+                contains: q?.toString(), // This generates WHERE name LIKE '%phone%'
+            },
+        },
+    });
+    return SUCCESS_RESPONSE(res, 'Product Search', result);
 };
 
 export default searchProduct;
