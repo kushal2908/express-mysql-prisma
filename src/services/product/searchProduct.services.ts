@@ -15,11 +15,9 @@ const searchProduct = async (req: Request, res: Response): Promise<any> => {
         where: {
             description: {
                 search: q?.toString(),
-                contains: q?.toString(), // This generates WHERE name LIKE '%phone%'
             },
             name: {
                 search: q?.toString(),
-                contains: q?.toString(), // This generates WHERE name LIKE '%phone%'
             },
         },
     });

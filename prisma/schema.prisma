@@ -86,6 +86,7 @@ model product {
   stock         stock[]
   stock_history stock_history[]
 
+  @@fulltext([name])
   @@fulltext([description, name])
 }
 
